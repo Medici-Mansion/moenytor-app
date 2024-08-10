@@ -1,5 +1,5 @@
 import { registerForPushNotificationsAsync } from "@/provider/push-notification";
-import { createWebView, bridge } from "@webview-bridge/react-native";
+import { bridge } from "@webview-bridge/react-native";
 import * as Notifications from "expo-notifications";
 
 export const appBridge = bridge({
@@ -8,14 +8,10 @@ export const appBridge = bridge({
   },
   async pushNotification(request: Notifications.NotificationRequestInput) {
     await registerForPushNotificationsAsync();
+
     await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Hi! Its’ Moneytor.",
-        body: "Bake Cookies 4 times this week..🍪🍪🍪\nCome to Moneytor and review your history",
-        data: { data: "goes here", test: { test1: "more data" } },
-        interruptionLevel: "critical",
-      },
-      trigger: { seconds: 2 },
+      content: request.content,
+      trigger: request.trigger ?? { seconds: 5 },
     });
   },
 });

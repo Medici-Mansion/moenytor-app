@@ -9,7 +9,7 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { createContext } from "@/lib";
-import { StateManager } from "@/lib/state";
+import * as Device from "expo-device";
 
 type PushContext = {
   pushNotification: () => Promise<void>;
@@ -26,7 +26,7 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
-  const pushNotification = useCallback(async () => {
+  const pushNotification = async () => {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Hi! Its’ Moneytor.",
@@ -36,7 +36,7 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
       },
       trigger: { seconds: 2 },
     });
-  }, []);
+  };
 
   const [channels, setChannels] = useState<Notifications.NotificationChannel[]>(
     []
@@ -44,7 +44,7 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(
-      async (token) => token && (await StateManager.set("pushToken", token))
+      (token) => token && console.log(token)
     );
 
     if (Platform.OS === "android") {
@@ -55,7 +55,6 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
-        console.log(notification);
       });
 
     responseListener.current =
@@ -72,6 +71,8 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
         Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
+  console.log(notification);
 
   return (
     <PushProvider
@@ -96,34 +97,40 @@ export async function registerForPushNotificationsAsync() {
     });
   }
 
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-  if (existingStatus !== "granted") {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
-  if (finalStatus !== "granted") {
-    alert("Failed to get push token for push notification!");
-    return;
-  }
-
-  try {
-    const projectId =
-      Constants?.expoConfig?.extra?.eas?.projectId ??
-      Constants?.easConfig?.projectId;
-    if (!projectId) {
-      throw new Error("Project ID not found");
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
     }
-    token = (
-      await Notifications.getExpoPushTokenAsync({
-        projectId,
-      })
-    ).data;
-  } catch (e) {
-    token = `${e}`;
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    // Learn more about projectId:
+    // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+    // EAS projectId is used here.
+    try {
+      const projectId =
+        Constants?.expoConfig?.extra?.eas?.projectId ??
+        Constants?.easConfig?.projectId;
+      if (!projectId) {
+        throw new Error("Project ID not found");
+      }
+      token = (
+        await Notifications.getExpoPushTokenAsync({
+          projectId,
+        })
+      ).data;
+      console.log(token);
+    } catch (e) {
+      token = `${e}`;
+    }
+  } else {
+    alert("Must use physical device for Push Notifications");
   }
-
-  console.log(token, Constants?.expoConfig, "<<token");
 
   return token;
 }
