@@ -32,7 +32,6 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
         title: "Hi! Its’ Moneytor.",
         body: "Bake Cookies 4 times this week..🍪🍪🍪\nCome to Moneytor and review your history",
         data: { data: "goes here", test: { test1: "more data" } },
-        badge: 10,
         interruptionLevel: "critical",
       },
       trigger: { seconds: 2 },

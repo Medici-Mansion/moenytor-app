@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import Animated, {
   Easing,
+  FadeIn,
+  FadeOutDown,
   interpolate,
   runOnJS,
   useAnimatedStyle,
@@ -22,6 +24,8 @@ import MaskedView from "@react-native-masked-view/masked-view";
 
 import splashBackground from "@/assets/images/splash-bg.png";
 import { Image } from "expo-image";
+import LogoImg from "@/assets/images/icon.png";
+import { LinearGradient } from "expo-linear-gradient";
 
 const splashImageUri = RNImage.resolveAssetSource(splashBackground).uri;
 
@@ -102,16 +106,11 @@ export function Splash(props: React.PropsWithChildren<Props>) {
   const outroApp = useSharedValue(0);
   const outroAppOpacity = useSharedValue(0);
   const [isAnimationComplete, setIsAnimationComplete] = React.useState(false);
-  const [isImageLoaded, setIsImageLoaded] = React.useState(false);
   const [isLayoutReady, setIsLayoutReady] = React.useState(false);
   const [reduceMotion, setReduceMotion] = React.useState<boolean | undefined>(
     false
   );
-  const isReady =
-    props.isReady &&
-    isImageLoaded &&
-    isLayoutReady &&
-    reduceMotion !== undefined;
+  const isReady = props.isReady && isLayoutReady && reduceMotion !== undefined;
 
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
@@ -180,7 +179,6 @@ export function Splash(props: React.PropsWithChildren<Props>) {
 
   const onFinish = useCallback(() => setIsAnimationComplete(true), []);
   const onLayout = useCallback(() => setIsLayoutReady(true), []);
-  const onLoadEnd = useCallback(() => setIsImageLoaded(true), []);
 
   useEffect(() => {
     if (isReady) {
@@ -221,77 +219,22 @@ export function Splash(props: React.PropsWithChildren<Props>) {
 
   const logoAnimations =
     reduceMotion === true ? reducedLogoAnimation : logoAnimation;
-  // special off-spec color for dark mode
-  const logoBg = isDarkMode ? "#0F1824" : "#fff";
-  // const logoBg = "#fff";
+  const logoBg = "#fff";
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayout}>
-      {!isAnimationComplete && (
-        <View style={StyleSheet.absoluteFillObject}>
-          <Image
-            accessibilityIgnoresInvertColors
-            onLoadEnd={onLoadEnd}
-            source={{ uri: splashImageUri }}
-            style={StyleSheet.absoluteFillObject}
-          />
-
-          {/* <Animated.View
-            style={[
-              bottomLogoAnimation,
-              {
-                position: "absolute",
-                bottom: insets.bottom + 40,
-                left: 0,
-                right: 0,
-                alignItems: "center",
-                justifyContent: "center",
-                opacity: 0,
-              },
-            ]}
-          >
-            <Logotype fill="#fff" width={90} />
-          </Animated.View> */}
-        </View>
-      )}
-
+    <Animated.View
+      style={{ flex: 1 }}
+      onLayout={onLayout}
+      exiting={FadeOutDown}
+    >
       {isReady && (
-        <MaskedView
-          style={[StyleSheet.absoluteFillObject]}
-          maskElement={
-            <Animated.View
-              style={[
-                {
-                  backgroundColor: "transparent",
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  transform: [
-                    { translateY: -(insets.top / 2) },
-                    { scale: 0.1 },
-                  ],
-                },
-              ]}
-            >
-              <AnimatedLogo fill={logoBg} style={[logoAnimations]} />
-            </Animated.View>
-          }
+        <Animated.View
+          style={[{ flex: 1 }, appAnimation]}
+          exiting={FadeOutDown}
         >
-          {!isAnimationComplete && (
-            <View
-              style={[
-                StyleSheet.absoluteFillObject,
-                {
-                  backgroundColor: logoBg,
-                },
-              ]}
-            />
-          )}
-          <Animated.View style={[{ flex: 1 }, appAnimation]}>
-            {props.children}
-          </Animated.View>
-        </MaskedView>
+          {props.children}
+        </Animated.View>
       )}
-    </View>
+    </Animated.View>
   );
 }

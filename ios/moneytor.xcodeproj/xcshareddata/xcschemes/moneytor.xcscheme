@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "moneytorapp.app"
-               BlueprintName = "moneytorapp"
-               ReferencedContainer = "container:moneytorapp.xcodeproj">
+               BuildableName = "moneytor.app"
+               BlueprintName = "moneytor"
+               ReferencedContainer = "container:moneytor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "moneytorappTests.xctest"
-               BlueprintName = "moneytorappTests"
-               ReferencedContainer = "container:moneytorapp.xcodeproj">
+               BuildableName = "moneytorTests.xctest"
+               BlueprintName = "moneytorTests"
+               ReferencedContainer = "container:moneytor.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "moneytorapp.app"
-            BlueprintName = "moneytorapp"
-            ReferencedContainer = "container:moneytorapp.xcodeproj">
+            BuildableName = "moneytor.app"
+            BlueprintName = "moneytor"
+            ReferencedContainer = "container:moneytor.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "moneytorapp.app"
-            BlueprintName = "moneytorapp"
-            ReferencedContainer = "container:moneytorapp.xcodeproj">
+            BuildableName = "moneytor.app"
+            BlueprintName = "moneytor"
+            ReferencedContainer = "container:moneytor.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

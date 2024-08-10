@@ -6,9 +6,13 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: false,
-    shouldSetBadge: true,
+    shouldSetBadge: false,
   }),
 });
+
+// 잠금화면 가시용
+// 결재 예시 푸시
+// 당일 지출 리뷰 페이지 연속적인 리뷰
 
 export default function App() {
   const { channels, pushNotification, notification } = usePushContext();

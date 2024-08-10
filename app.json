@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "moneytor-app",
-    "slug": "moneytor-app",
+    "name": "moneytor",
+    "slug": "moneytor",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.raymondanything.moneytor-app",
+      "bundleIdentifier": "com.raymondanything.moneytor",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -33,6 +33,14 @@
     "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3e721b37-35ff-4208-8d2a-d27aee45737a"
+      }
     }
   }
 }

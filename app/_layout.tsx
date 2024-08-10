@@ -12,6 +12,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { StateManager } from "@/lib/state";
 import { PushNotificationProvider } from "@/provider/push-notification";
 import { ActivityIndicator, Text } from "react-native";
+import { Splash } from "@/provider/splash-provider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,7 +23,6 @@ export default function RootLayout() {
   useEffect(() => {
     const init = async () => {
       await StateManager.init();
-      await SplashScreen.hideAsync();
       setIsReady(true);
     };
     init();
@@ -37,23 +37,23 @@ export default function RootLayout() {
   }
 
   return (
-    // <Splash isReady={isReady}>
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <PushNotificationProvider>
-        <Stack
-          screenOptions={{
-            autoHideHomeIndicator: true,
-            animation: "ios",
-            contentStyle: {
-              backgroundColor: "transparent",
-            },
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="index" />
-        </Stack>
-      </PushNotificationProvider>
-    </ThemeProvider>
-    // </Splash>
+    <Splash isReady={isReady}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <PushNotificationProvider>
+          <Stack
+            screenOptions={{
+              autoHideHomeIndicator: true,
+              animation: "ios",
+              contentStyle: {
+                backgroundColor: "transparent",
+              },
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="index" />
+          </Stack>
+        </PushNotificationProvider>
+      </ThemeProvider>
+    </Splash>
   );
 }
