@@ -85,7 +85,7 @@ const PushNotificationProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-async function registerForPushNotificationsAsync() {
+export async function registerForPushNotificationsAsync() {
   let token;
 
   if (Platform.OS === "android") {
@@ -123,6 +123,8 @@ async function registerForPushNotificationsAsync() {
   } catch (e) {
     token = `${e}`;
   }
+
+  console.log(token, Constants?.expoConfig, "<<token");
 
   return token;
 }

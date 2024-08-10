@@ -1,3 +1,4 @@
+import { registerForPushNotificationsAsync } from "@/provider/push-notification";
 import { createWebView, bridge } from "@webview-bridge/react-native";
 import * as Notifications from "expo-notifications";
 
@@ -6,6 +7,7 @@ export const appBridge = bridge({
     return true;
   },
   async pushNotification(request: Notifications.NotificationRequestInput) {
+    await registerForPushNotificationsAsync();
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Hi! Its’ Moneytor.",
