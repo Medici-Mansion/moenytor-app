@@ -12,6 +12,7 @@ export const appBridge = bridge({
     await Notifications.scheduleNotificationAsync({
       content: request.content,
       trigger: request.trigger ?? { seconds: 5 },
+      identifier: request.identifier,
     });
   },
 });
